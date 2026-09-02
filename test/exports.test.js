@@ -25,6 +25,23 @@ for (const name of [
   });
 }
 
+test("subpath exports resolve from helper folders", () => {
+  for (const name of [
+    "app-utils",
+    "encrypt",
+    "file",
+    "firestore",
+    "git",
+    "location",
+    "mysql",
+    "postgres",
+  ]) {
+    const resolved = require.resolve(`es-helpers/${name}`);
+    assert.equal(path.basename(resolved), "index.js");
+    assert.equal(path.basename(path.dirname(resolved)), name);
+  }
+});
+
 test("package root exposes helpers lazily", () => {
   const helpers = require("es-helpers");
   assert.equal(helpers.postgres, require("es-helpers/postgres"));

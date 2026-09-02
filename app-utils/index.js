@@ -24,7 +24,7 @@ module.exports = {
 
     this.globals = true;
 
-    baseDir = baseDir || __dirname;
+    baseDir = baseDir || require("path").resolve(__dirname, "..");
     baseDir = baseDir.replace(/\/+$/, "") + "/"; // remove trailing slashes
     global.__home = baseDir;
 
@@ -98,9 +98,9 @@ module.exports = {
     const packagedHelpers = ["encrypt", "file", "git", "mysql", "postgres"];
     if (!packagedHelpers.includes(helperName))
       throw new Error(`Unknown helper: ${name}`);
-    return require("./" + helperName);
+    return require("../" + helperName);
   },
-  location: require("./location"),
+  location: require("../location"),
   // removed: .loadModules function
 
   parentUrl(url) {

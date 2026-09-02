@@ -127,7 +127,7 @@ var localFile = {
     zipFolder: function (options, callback) {
         var source = options.src;
         var dest = options.dest || options.src;
-        var basePath = options.basePath || __dirname + '/../';
+        var basePath = options.basePath || path.resolve(__dirname, '../..') + '/';
 
         dest = dest[0] == '.' ? basePath + dest : dest;
         dest = dest.replace(/\\/g, '/');
@@ -149,7 +149,7 @@ var localFile = {
         return this;
     },
     git: function (baseDir) {
-        localGit = localGit || require('./git');
+        localGit = localGit || require('../git');
         baseDir = baseDir || global.__repos || process.cwd();
         return {
             pull: localGit.simplePull,

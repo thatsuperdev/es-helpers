@@ -1,6 +1,6 @@
 {
   "name": "es-helpers",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Reusable Node.js database and application helpers with selective subpath imports",
   "keywords": [
     "nodejs",
@@ -36,23 +36,31 @@
       "require": "./index.js",
       "default": "./index.js"
     },
-    "./app-utils": "./app-utils.js",
-    "./encrypt": "./encrypt.js",
-    "./file": "./file.js",
-    "./firestore": "./firestore.js",
-    "./git": "./git.js",
-    "./location": "./location.js",
-    "./mysql": "./mysql.js",
+    "./app-utils": "./app-utils/index.js",
+    "./encrypt": "./encrypt/index.js",
+    "./file": "./file/index.js",
+    "./firestore": "./firestore/index.js",
+    "./git": "./git/index.js",
+    "./location": "./location/index.js",
+    "./mysql": "./mysql/index.js",
     "./postgres": {
-      "types": "./postgres.d.ts",
-      "require": "./postgres.js",
-      "default": "./postgres.js"
+      "types": "./postgres/index.d.ts",
+      "require": "./postgres/index.js",
+      "default": "./postgres/index.js"
     },
     "./package.json": "./package.json"
   },
   "files": [
-    "*.js",
-    "*.d.ts"
+    "index.js",
+    "index.d.ts",
+    "app-utils",
+    "encrypt",
+    "file",
+    "firestore",
+    "git",
+    "location",
+    "mysql",
+    "postgres"
   ],
   "publishConfig": {
     "access": "public"

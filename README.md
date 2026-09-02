@@ -64,115 +64,16 @@ const { postgres, firestore } = require("es-helpers");
 
 | Import | Purpose |
 | --- | --- |
-| `es-helpers/app-utils` | Shared app globals, tokens, locations, and helper resolution |
-| `es-helpers/encrypt` | Password matching, hashing, and random strings |
-| `es-helpers/file` | JSON, copy, download, archive, and removal utilities |
-| `es-helpers/firestore` | Firebase Admin Firestore instances, including named apps |
-| `es-helpers/git` | Clone, pull, commit, and push utilities |
-| `es-helpers/location` | IP geolocation provider clients |
-| `es-helpers/mysql` | MySQL connection and query helpers |
-| `es-helpers/postgres` | PostgreSQL pools, transactions, raw queries, and table CRUD/upserts |
+| [`es-helpers/app-utils`](app-utils/README.md) | Shared app globals, tokens, locations, and helper resolution |
+| [`es-helpers/encrypt`](encrypt/README.md) | Password matching, hashing, and random strings |
+| [`es-helpers/file`](file/README.md) | JSON, copy, download, archive, and removal utilities |
+| [`es-helpers/firestore`](firestore/README.md) | Firebase Admin Firestore instances, including named apps |
+| [`es-helpers/git`](git/README.md) | Clone, pull, commit, and push utilities |
+| [`es-helpers/location`](location/README.md) | IP geolocation provider clients |
+| [`es-helpers/mysql`](mysql/README.md) | MySQL connection and query helpers |
+| [`es-helpers/postgres`](postgres/README.md) | PostgreSQL pools, transactions, raw queries, and table CRUD/upserts |
 
-## PostgreSQL
-
-Use `query()` for unrestricted parameterized SQL. It returns the native `pg`
-result, so fields such as `rows`, `rowCount`, and `command` remain available.
-
-```js
-const postgres = require("es-helpers/postgres");
-
-const result = await postgres.query(
-  "SELECT u.* FROM users u WHERE u.created_at >= $1 ORDER BY u.created_at DESC",
-  [new Date("2026-01-01")]
-);
-const rows = await postgres.queryRows("SELECT * FROM users WHERE active = $1", [true]);
-const user = await postgres.queryOne("SELECT * FROM users WHERE id = $1", [42]);
-const changed = await postgres.execute("UPDATE users SET active = $1 WHERE id = $2", [false, 42]);
-```
-
-`queryRows()`, `queryOne()`, and `execute()` are convenience methods over the
-same raw-SQL path. They return rows, one row or `null`, and the affected-row
-count respectively.
-
-Use the table API for ordinary equality-based CRUD:
-
-```js
-const $postgres = require("es-helpers/postgres");
-const users = $postgres.table("users");
-
-const user = await users.findOne({ email: "me@example.com" });
-const created = await users.insert({ email: "me@example.com", active: true });
-await users.update({ active: false }, { id: created.id });
-await users.upsert(
-  { id: created.id, email: "new@example.com" },
-  ["id"]
-);
-await users.delete({ id: created.id });
-const removed = await users.delete({ active: false }, { returning: false });
-```
-
-The default client reads `POSTGRES_URL`, then `DATABASE_URL`. For explicit
-configuration or tests, create an isolated client:
-
-```js
-const db = $postgres.create({
-  connectionString: process.env.AIVEN_DATABASE_URL,
-  ssl: { rejectUnauthorized: false },
-  max: 8,
-});
-
-await db.tx(async (tx) => {
-  await tx.table("accounts").update({ balance: 90 }, { id: 1 });
-  await tx.table("ledger").insert({ account_id: 1, amount: -10 });
-});
-```
-
-Transactions expose `query()`, `queryRows()`, `queryOne()`, `execute()`,
-`table()`, and the checked-out native `client`.
-
-Table methods support equality and `NULL` filters. Use raw SQL for joins,
-ranges, expressions, locking, aggregates, and database-specific features.
-Identifiers are validated and quoted; values are parameterized. Empty update
-and delete filters are rejected. Mutations return rows by default and return
-the affected-row count when `{ returning: false }` is supplied.
-
-## MySQL
-
-The MySQL helper can use standard environment variables or explicit config:
-
-```js
-const mysql = require("es-helpers/mysql");
-
-// MYSQL_URL, or MYSQL_HOST/MYSQL_PORT/MYSQL_USER/MYSQL_PASSWORD/MYSQL_DATABASE
-const rows = await mysql.queryRows("SELECT * FROM users WHERE id = ?", [42]);
-
-mysql.configure({
-  host: "127.0.0.1",
-  user: "app",
-  password: "secret",
-  database: "app",
-});
-```
-
-`query()` retains the callback-compatible `mysql2` API. New code can use
-`queryRows()`, `queryOne()`, and `execute()`.
-
-## Encryption
-
-Use `hashPassword()`, `verifyPassword()`, and `randomString()` for new code.
-The SHA-1/MD5 methods remain only for compatibility with legacy stored hashes;
-do not use them for new passwords or tokens.
-
-Firestore accepts a service-account object or JSON file path:
-
-```js
-const db = $fsdb.getInstance("./service-account.json");
-const devDb = $fsdb.getInstance("./dev-service-account.json", {
-  name: "development",
-});
-```
-
-Credentials and environment-specific file paths stay in the consuming project.
+Each helper folder contains its own API, configuration, and usage guide.
 
 ## Public API policy
 
