@@ -139,6 +139,24 @@ test("postgres raw helpers preserve results, rows, one row, and affected counts"
   assert.equal(await db.execute("SELECT $1::int AS id", [7]), 1);
 });
 
+test("postgres resolves custom connection environments and owns SSL parsing", async () => {
+  process.env.ES_HELPERS_TEST_DATABASE_URL =
+    "postgres://user:pass@localhost:5432/db?sslmode=require";
+  const db = require("es-helpers/postgres").create({
+    connectionStringEnv: "ES_HELPERS_TEST_DATABASE_URL",
+    ssl: { rejectUnauthorized: false },
+  });
+
+  const pool = db.getPool();
+  assert.deepEqual(pool.options.ssl, { rejectUnauthorized: false });
+  assert.equal(
+    pool.options.connectionString,
+    "postgres://user:pass@localhost:5432/db"
+  );
+  await db.close();
+  delete process.env.ES_HELPERS_TEST_DATABASE_URL;
+});
+
 test("postgres mutations return affected counts when RETURNING is disabled", async () => {
   const db = require("es-helpers/postgres").create({
     pool: {

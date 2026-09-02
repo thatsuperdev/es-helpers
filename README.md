@@ -29,7 +29,6 @@ Install only the peer dependencies required by the helpers a project uses:
 
 ```sh
 npm install mysql2 debug                         # mysql
-npm install pg                                   # postgres
 npm install firebase-admin                       # firestore
 npm install debug dotenv jsonwebtoken qs axios  # app-utils
 npm install bcrypt                               # encrypt
@@ -38,8 +37,8 @@ npm install simple-git                           # git
 ```
 
 The package exposes each helper separately, so requiring one subpath does not
-load the others. npm still installs the small source package as a whole; optional
-peer dependencies prevent unused integrations from being installed.
+load the others. PostgreSQL support is included; other integration packages
+remain optional peer dependencies.
 
 ## Use
 

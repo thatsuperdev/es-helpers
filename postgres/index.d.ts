@@ -18,6 +18,7 @@ export interface PoolLike extends Queryable {
 
 export interface PostgresOptions {
   connectionString?: string;
+  connectionStringEnv?: string;
   pool?: PoolLike;
   [poolOption: string]: unknown;
 }

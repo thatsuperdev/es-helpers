@@ -65,16 +65,32 @@ function create(options = {}) {
 
   function getPool() {
     if (pool) return pool;
+    const connectionStringEnv = options.connectionStringEnv;
     const connectionString =
       options.connectionString ||
+      (connectionStringEnv && process.env[connectionStringEnv]) ||
       process.env.POSTGRES_URL ||
       process.env.DATABASE_URL;
     if (!connectionString) {
-      throw new Error("POSTGRES_URL or DATABASE_URL is required");
+      throw new Error(
+        connectionStringEnv
+          ? `${connectionStringEnv} is required`
+          : "POSTGRES_URL or DATABASE_URL is required"
+      );
     }
-    const { pool: ignoredPool, connectionString: ignoredUrl, ...poolOptions } =
-      options;
-    pool = new Pool({ ...poolOptions, connectionString });
+    const {
+      pool: ignoredPool,
+      connectionString: ignoredUrl,
+      connectionStringEnv: ignoredEnv,
+      ...poolOptions
+    } = options;
+    let url = connectionString;
+    if (poolOptions.ssl) {
+      const parsed = new URL(connectionString);
+      parsed.searchParams.delete("sslmode");
+      url = parsed.toString();
+    }
+    pool = new Pool({ ...poolOptions, connectionString: url });
     return pool;
   }
 

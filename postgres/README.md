@@ -32,11 +32,13 @@ and delete filters are rejected. Mutations return rows unless
 
 ## Configuration and transactions
 
-The default client reads `POSTGRES_URL`, then `DATABASE_URL`.
+The default client reads `POSTGRES_URL`, then `DATABASE_URL`. For a custom
+environment variable, set `connectionStringEnv`; it is resolved lazily when
+the first connection is requested.
 
 ```js
 const db = postgres.create({
-  connectionString: process.env.AIVEN_DATABASE_URL,
+  connectionStringEnv: "AIVEN_DATABASE_URL",
   ssl: { rejectUnauthorized: false },
   max: 8,
 });
@@ -49,4 +51,9 @@ await db.tx(async (tx) => {
 
 Transactions expose `query`, `queryRows`, `queryOne`, `execute`, `table`, and
 the checked-out native `client`. Use raw SQL for joins, ranges, expressions,
-locking, aggregates, and database-specific features. Install `pg`.
+locking, aggregates, and database-specific features.
+
+`pg` is installed by `es-helpers`; consuming projects do not need to declare it
+separately. When an explicit `ssl` option is supplied, `sslmode` is removed
+from the connection URL so the explicit SSL policy is not overwritten by
+`node-postgres` URL parsing.
