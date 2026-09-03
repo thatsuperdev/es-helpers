@@ -1,6 +1,6 @@
 {
   "name": "es-helpers",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Reusable Node.js database and application helpers with selective subpath imports",
   "keywords": [
     "nodejs",

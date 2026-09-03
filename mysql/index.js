@@ -38,6 +38,8 @@ const mysql = {
     let pickedConfig = dbServers[this.selectedConfig];
     if (pickedConfig && pickedConfig.host && pickedConfig.database) {
       dbConfig = pickedConfig;
+    } else if (dbServers.host && dbServers.database) {
+      dbConfig = dbServers;
     }
     if (!dbConfig) throw new Error(`Unknown MySQL configuration: ${name}`);
     debug('Loaded db config for "%s" mode', name, dbConfig.database || "URL");

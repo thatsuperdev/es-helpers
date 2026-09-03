@@ -12,5 +12,5 @@ const changed = await mysql.execute("UPDATE users SET active = ? WHERE id = ?", 
 
 Configure with `MYSQL_URL`, or `MYSQL_HOST`, `MYSQL_PORT`, `MYSQL_USER`,
 `MYSQL_PASSWORD`, and `MYSQL_DATABASE`. You can also call `configure(config)`.
-`query` retains the callback-compatible `mysql2` API. Install `mysql2` and
-`debug`.
+`query` retains the callback-compatible `mysql2` API. The package includes
+the `mysql2` and `debug` runtime dependencies.
