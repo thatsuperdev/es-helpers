@@ -74,8 +74,7 @@
   "peerDependencies": {
     "axios": "^1.4.0",
     "bcrypt": "^6.0.0",
-    "debug": "^4.3.4",
-    "dotenv": "^16.0.0",
+    "debug": ">=2.6.9",
     "firebase-admin": "^11.5.0",
     "folder-zip": "0.0.5",
     "jsonwebtoken": "^9.0.0",
@@ -87,7 +86,6 @@
     "axios": { "optional": true },
     "bcrypt": { "optional": true },
     "debug": { "optional": true },
-    "dotenv": { "optional": true },
     "firebase-admin": { "optional": true },
     "folder-zip": { "optional": true },
     "jsonwebtoken": { "optional": true },
