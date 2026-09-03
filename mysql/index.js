@@ -53,6 +53,7 @@ const mysql = {
           ? (global.__isLocal ? "local" : global.__mode)
           : null);
       if (mode && dbServers[mode]) this.selectConfig(mode, true);
+      else if (dbServers.host && dbServers.database) dbConfig = dbServers;
       if (!dbConfig) {
         throw new Error(
           "MySQL configuration is required; call configure() or set MYSQL_URL/MYSQL_HOST"
