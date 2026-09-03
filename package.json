@@ -1,6 +1,6 @@
 {
   "name": "es-helpers",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Reusable Node.js database and application helpers with selective subpath imports",
   "keywords": [
     "nodejs",
@@ -69,27 +69,25 @@
     "test": "node --test"
   },
   "dependencies": {
+    "debug": "^4.3.4",
+    "mysql2": "^3.3.4",
     "pg": "^8.11.0"
   },
   "peerDependencies": {
     "axios": "^1.4.0",
     "bcrypt": "^6.0.0",
-    "debug": ">=2.6.9",
     "firebase-admin": "^11.5.0",
     "folder-zip": "0.0.5",
     "jsonwebtoken": "^9.0.0",
-    "mysql2": "^3.3.4",
     "qs": "^6.11.0",
     "simple-git": "^3.19.1"
   },
   "peerDependenciesMeta": {
     "axios": { "optional": true },
     "bcrypt": { "optional": true },
-    "debug": { "optional": true },
     "firebase-admin": { "optional": true },
     "folder-zip": { "optional": true },
     "jsonwebtoken": { "optional": true },
-    "mysql2": { "optional": true },
     "qs": { "optional": true },
     "simple-git": { "optional": true }
   },

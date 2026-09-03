@@ -28,7 +28,6 @@ npm install ../es-helpers
 Install only the peer dependencies required by the helpers a project uses:
 
 ```sh
-npm install mysql2 debug                         # mysql
 npm install firebase-admin                       # firestore
 npm install debug jsonwebtoken qs               # app-utils
 npm install bcrypt                               # encrypt
@@ -37,8 +36,8 @@ npm install simple-git                           # git
 ```
 
 The package exposes each helper separately, so requiring one subpath does not
-load the others. PostgreSQL support is included; other integration packages
-remain optional peer dependencies.
+load the others. PostgreSQL, MySQL, and their drivers are included; other
+integration packages remain optional peer dependencies.
 
 ## Use
 
