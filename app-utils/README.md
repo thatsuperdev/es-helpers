@@ -1,6 +1,6 @@
 # App utilities
 
-Shared application globals, transformations, tokens, and helper lookup.
+Shared application globals, transformations, and tokens.
 
 ```js
 const appUtils = require("es-helpers/app-utils");
@@ -13,9 +13,10 @@ const token = appUtils.createUserToken(user, {
 });
 ```
 
-Main methods: `setCommonGlobals`, `setRequestGlobals`, `loadHelper`,
-`toCamelCase`, `reverseCamelCase`, `base64`, `decodeBase64`,
-`createUserToken`, and `queryStringToJSON`.
+Main methods: `setCommonGlobals`, `setRequestGlobals`, `toCamelCase`,
+`reverseCamelCase`, `base64`, `decodeBase64`, `createUserToken`, and
+`queryStringToJSON`.
 
-Install `debug` and `dotenv`; `jsonwebtoken` and `qs` are needed only by the
-methods that use them. `location` delegates to the location helper.
+Install `debug`; `jsonwebtoken` and `qs` are needed only by the methods that
+use them. This helper does not load dotenv, preload databases, or resolve
+project-specific helpers. Extend it from the consumer's local `app.util.js`.

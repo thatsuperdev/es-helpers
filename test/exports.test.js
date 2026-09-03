@@ -56,11 +56,11 @@ test("mysql imports without project globals", () => {
   );
 });
 
-test("app-utils resolves packaged helpers", () => {
-  assert.equal(
-    require("es-helpers/app-utils").loadHelper("encrypt"),
-    require("es-helpers/encrypt")
-  );
+test("app-utils stays project-agnostic", () => {
+  const appUtils = require("es-helpers/app-utils");
+  assert.equal(typeof appUtils.setCommonGlobals, "function");
+  assert.equal(appUtils.loadHelper, undefined);
+  assert.equal(appUtils.location, undefined);
 });
 
 test("firestore reuses a named app", () => {

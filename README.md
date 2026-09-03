@@ -30,7 +30,7 @@ Install only the peer dependencies required by the helpers a project uses:
 ```sh
 npm install mysql2 debug                         # mysql
 npm install firebase-admin                       # firestore
-npm install debug dotenv jsonwebtoken qs axios  # app-utils
+npm install debug jsonwebtoken qs               # app-utils
 npm install bcrypt                               # encrypt
 npm install folder-zip                          # file (zipFolder only)
 npm install simple-git                           # git
@@ -63,7 +63,7 @@ const { postgres, firestore } = require("es-helpers");
 
 | Import | Purpose |
 | --- | --- |
-| [`es-helpers/app-utils`](app-utils/README.md) | Shared app globals, tokens, locations, and helper resolution |
+| [`es-helpers/app-utils`](app-utils/README.md) | Shared app globals, transformations, and tokens |
 | [`es-helpers/encrypt`](encrypt/README.md) | Password matching, hashing, and random strings |
 | [`es-helpers/file`](file/README.md) | JSON, copy, download, archive, and removal utilities |
 | [`es-helpers/firestore`](firestore/README.md) | Firebase Admin Firestore instances, including named apps |
@@ -79,6 +79,7 @@ Each helper folder contains its own API, configuration, and usage guide.
 - Subpath imports are the stable API and avoid loading unrelated integrations.
 - Database credentials and provider-specific connection policy belong to the consumer.
 - Integration packages are optional peer dependencies.
+- Project-specific helpers and conventions belong in the consumer's local app utility extension.
 - Existing callback APIs remain for compatibility; new database APIs are Promise-based.
 
 ## Development

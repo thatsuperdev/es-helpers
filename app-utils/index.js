@@ -1,7 +1,5 @@
 const debug = require("debug")(process.env.DEBUG || "app");
-require("dotenv").config();
 module.exports = {
-  preloads: { mysql: true },
   presets: {
     api: true,
     middleware: true,
@@ -20,8 +18,6 @@ module.exports = {
 
     debug("setting common globals!");
     const PRESETS = this.presets;
-    const PRELOADS = this.preloads;
-
     this.globals = true;
 
     baseDir = baseDir || require("path").resolve(__dirname, "..");
@@ -40,8 +36,6 @@ module.exports = {
     PRESETS.middleware && (global.__middleware = baseDir + "middleware/");
     PRESETS.public && (global.__public = baseDir + "public/");
     PRESETS.images && (global.__images = global.__public + "images/");
-
-    PRELOADS.mysql && (global.dbo = this.loadHelper("mysql"));
 
     const paths = require("path");
     const basename = paths.basename(global.__home);
@@ -83,26 +77,6 @@ module.exports = {
     global.__apiPath = global.__server + global.__api; //contains for API referred by this request
     next();
   },
-  loadHelper(name) {
-    const baseUrl = global.__helpers;
-    if (baseUrl) {
-      if (global.helpers && global.helpers.list[name])
-        return require(baseUrl + global.helpers.list[name]);
-      try {
-        return require(baseUrl + name);
-      } catch (e) {
-        if (e.code !== "MODULE_NOT_FOUND") throw e;
-      }
-    }
-    const helperName = name.replace(/^es-helper-/i, "");
-    const packagedHelpers = ["encrypt", "file", "git", "mysql", "postgres"];
-    if (!packagedHelpers.includes(helperName))
-      throw new Error(`Unknown helper: ${name}`);
-    return require("../" + helperName);
-  },
-  location: require("../location"),
-  // removed: .loadModules function
-
   parentUrl(url) {
     return url.substr(0, url.lastIndexOf("/"));
   },
@@ -146,44 +120,12 @@ module.exports = {
   decodeBase64(b64Encoded) {
     return Buffer.from(b64Encoded, "base64").toString();
   },
-  get(key) {
-    key = key.toLowerCase().split(":");
-    switch (key[0]) {
-      case "date":
-      case "timestamp":
-      case "ts":
-        if (key[0] === "ts" || key[0] === "timestamp") {
-          // return Math.floor(Date.now() / 1000);//is buggy
-          var ts = +new Date();
-          return ts;
-        }
-        var d = new Date();
-
-        var format = (key[1] || "dd-mm-yy").toLowerCase().split("-");
-        var data = [];
-        format.forEach(function (field) {
-          if (field == "dd") data.push(d.getDate());
-          else if (field == "mm")
-            data.push(("0" + (d.getMonth() + 1)).substr(-2));
-          else if (field == "yy") data.push(d.getFullYear());
-        });
-        return data.join("-");
-        break;
-    }
-  },
   createUserToken(userObj, config) {
     let jwt = require("jsonwebtoken");
     const temp = this.toCamelCase(userObj);
     const { jwtSecret } = config || {};
-    if (!jwtSecret) {
-      if (!global.__config) {
-        throw new Error("jwtSecret is required when app globals are not configured");
-      }
-      config = {
-        ...(config || {}),
-        ...require(global.__config + "/app/app.config"),
-      };
-    }
+    if (!jwtSecret)
+      throw new Error("jwtSecret is required");
     var tokenObj = {
       userId: temp.userId,
       userEmail: temp.userEmail || temp.email,
